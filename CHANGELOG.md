@@ -1,2 +1,2 @@
 ## 0.0.1
-`gen_key` package published
+`gen_expects` package published

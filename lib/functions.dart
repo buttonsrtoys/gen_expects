@@ -1,4 +1,4 @@
-import 'package:gen_key/key_meta.dart';
+import 'package:gen_expects/key_meta.dart';
 
 Future<String> generateKeyClass(List<KeyMeta> keyMetas) async {
   final buffer = StringBuffer();

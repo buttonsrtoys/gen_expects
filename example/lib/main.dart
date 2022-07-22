@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gen_key/annotations.dart';
+import 'package:gen_expects/annotations.dart';
 
 part 'main.keys.dart';
 
@@ -17,7 +17,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(key: MainKeys.homePage, title: 'Flutter Demo Home Page',),
+      home: const MyHomePage(
+        key: MainKeys.homePage,
+        title: 'Flutter Demo Home Page',
+      ),
     );
   }
 }

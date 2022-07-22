@@ -1,4 +1,4 @@
-name: gen_key
+name: gen_expects
 description: Code generator for widget keys.
 
 version: 0.0.1

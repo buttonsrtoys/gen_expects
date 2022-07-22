@@ -1,5 +1,5 @@
 name: example
-description: gen_key example
+description: gen_expects example
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  gen_key:
+  gen_expects:
     path: ../
 
   cupertino_icons: ^1.0.5
