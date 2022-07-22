@@ -28,7 +28,7 @@ Map<String, List<String>> _enStringReverseLookup = <String, List<String>>{};
 /// [appGetterText] is a String representation of the build app call.
 Future<void> genExpects(
   WidgetTester tester, {
-  Type testAppType = MaterialApp,
+  Type appType = MaterialApp,
   Widget Function()? testAppBuilder,
   bool silent = false,
   bool shouldGesture = false,
@@ -39,7 +39,7 @@ Future<void> genExpects(
 }) async {
   final text = await genExpectsOutput(
     tester,
-    testAppType: testAppType,
+    testAppType: appType,
     testAppBuilder: testAppBuilder,
     silent: silent,
     shouldGesture: shouldGesture,

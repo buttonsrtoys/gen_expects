@@ -27,7 +27,11 @@ void main() {
     // Verify that our counter has incremented.
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
+  });
 
-    await genExpects(tester);
+  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    await tester.pumpWidget(const MyApp());
+
+    await genExpects(tester, appType: MyApp);
   });
 }

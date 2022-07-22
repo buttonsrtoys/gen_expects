@@ -76,7 +76,7 @@ void main() {
       final app = testApp(textWidgetNoKey);
       await tester.pumpWidget(app);
 
-      final output = await genExpectsOutput(tester);
+      final output = await genExpectsOutput(tester, testAppType: MaterialApp);
 
       expect(output.length, 0);
     });
@@ -87,7 +87,6 @@ void main() {
 
       final output = await genExpectsOutput(tester);
 
-      expectInstructions(output);
       expect(output[1], "\ttester.expectWidget(text: '$text', key: $keyName);");
     });
 
@@ -97,7 +96,6 @@ void main() {
 
       final output = await genExpectsOutput(tester);
 
-      expectInstructions(output);
       expect(output[1], "\texpect(find.byKey($keyName), findsOneWidget);");
     });
 
@@ -109,7 +107,6 @@ void main() {
 
       final output = await genExpectsOutput(tester);
 
-      expectInstructions(output);
       expect(output[1], '\texpect(find.byType(TextButton), findsOneWidget);');
     });
   });
