@@ -1,5 +1,5 @@
 name: gen_expects
-description: Code generator for widget keys.
+description: Code generator for widget test expect statements
 
 version: 0.0.1
 
@@ -10,12 +10,10 @@ dependencies:
   flutter:
     sdk: flutter
   analyzer: ^4.2.0
-  build: ^2.3.0
-  source_gen: ^1.2.2
-
-dev_dependencies:
   flutter_test:
     sdk: flutter
+
+dev_dependencies:
   flutter_lints: ^2.0.1
 
 flutter:

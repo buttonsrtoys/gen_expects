@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gen_expects/annotations.dart';
+import 'package:gen_key/annotations.dart';
 
 part 'main.keys.dart';
 

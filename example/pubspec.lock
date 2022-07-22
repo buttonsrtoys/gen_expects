@@ -214,6 +214,13 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  gen_key:
+    dependency: "direct main"
+    description:
+      path: "../../gen_key"
+      relative: true
+    source: path
+    version: "0.0.1"
   glob:
     dependency: transitive
     description:
