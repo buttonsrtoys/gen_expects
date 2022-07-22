@@ -102,8 +102,9 @@ Future<List<String>> genExpectsOutput(
 }) async {
   assert(!shouldGesture || testAppBuilder != null);
 
-  await _loadEnStringReverseLookupIfNecessary();
-  await _loadCommonTypesIfNecessary();
+  // Rich,
+  // await _loadEnStringReverseLookupIfNecessary();
+  // await _loadCommonTypesIfNecessary();
 
   final text = <String>[];
   late BuildContext context;
