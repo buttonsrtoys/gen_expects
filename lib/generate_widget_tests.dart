@@ -21,22 +21,17 @@ Map<String, List<String>> _enStringReverseLookup = <String, List<String>>{};
 /// [appType] is the type of test app. This is used as the root to generate expects.
 /// [silent] determines whether to suppress output to console.
 /// [compareWithPrevious] determines whether only changed tests from the previous run are displayed
-/// The parameters below are deprecated and will be removed.
-/// [testAppBuilder] builds a test app
 /// [showTip] determines whether the cut-and-paste tip is shown (should be false inside generated widgetTests)
+///
+/// [testAppBuilder] builds a test app
 /// [shouldGesture] determines whether to tap, swipe, drag, etc.
 /// [copyToClipboard] determines whether to also generate to developer's clipboard,
-/// [appGetterText] is a String representation of the build app call.
 Future<void> genExpects(
   WidgetTester tester, {
   Set<Type>? commonTypes,
   String? pathToStrings,
   Type appType = MaterialApp,
   bool silent = false,
-  Widget Function()? testAppBuilder,
-  bool shouldGesture = false,
-  bool generateAsFunction = false,
-  bool copyToClipboard = true,
   bool showTip = true,
   bool compareWithPrevious = true,
 }) async {
@@ -45,13 +40,14 @@ Future<void> genExpects(
     commonTypes: commonTypes,
     pathToStrings: pathToStrings,
     testAppType: appType,
-    testAppBuilder: testAppBuilder,
     silent: silent,
-    shouldGesture: shouldGesture,
-    generateAsFunction: generateAsFunction,
-    copyToClipboard: copyToClipboard,
     showTip: showTip,
     compareWithPrevious: compareWithPrevious,
+    /// The parameters below are either unimplemented or deprecated and will be removed.
+    testAppBuilder: null,
+    shouldGesture: false,
+    copyToClipboard: false,
+    generateAsFunction: false,
   );
 
   _outputText(text);

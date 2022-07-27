@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+/// Holds the value of the class that has members that are strings. Typically, this is the S class in i18n.dart
+/// of the intl package. However, it can by any class of the structure:
+///
+///     class MyTextHolder {
+///       static String title => 'The Book of Avocados';
+///       static String body => 'Once upon a time there was an avocado....
+///     }
+///
 dynamic _s;
 
 extension WidgetTesterExtension on WidgetTester {
-  /// Set a class that has members that are strings (e.g., i18n.dart of the intl package)
+  /// Set a class that has members that are strings (see [_s] for more detail)
   static set s(dynamic value) => _s = value;
 
-  /// Get the class that has members that are strings (e.g., i18n.dart of the intl package)
+  /// Get the class that has members that are strings (see [_s] for more detail)
   static get s => _s;
 
   String _getStringFromFinder(

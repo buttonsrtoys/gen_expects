@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:example/main.dart';
 import 'package:gen_expects/generate_widget_tests.dart';
+import 'package:gen_expects/widget_tester_extension.dart';
 
 final Set<Type> commonTypes = <Type>{
   Fab,
