@@ -3,10 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:gen_expects/generate_widget_tests.dart';
 import 'package:gen_expects/register_types.dart';
 
-// import '../../utils/generate_widget_tests/generate_widget_tests.dart';
-// import '../../utils/generate_widget_tests/register_types.dart';
-// import '../../utils/test_app.dart';
-
 MaterialApp _buildApp(Widget widget) {
   return MaterialApp(
     home: MyCustomClass(
@@ -103,7 +99,6 @@ void main() {
         expect(output.contains(instructions), true);
         expect(output.contains("\texpect(find.byKey($keyName), findsOneWidget);"), true);
       },
-      skip: true, // Per EWP-1519, this passes local tests but fails in pipeline
     );
 
     testWidgets(
