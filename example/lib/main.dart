@@ -67,12 +67,29 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: Fab(
         key: MainKeys.fab,
         onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
+    );
+  }
+}
+
+class Fab extends StatelessWidget {
+  const Fab({
+    this.onPressed,
+    super.key,
+  });
+
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      key: MainKeys.fab,
+      onPressed: onPressed,
+      tooltip: 'Increment',
+      child: const Icon(Icons.add),
     );
   }
 }
