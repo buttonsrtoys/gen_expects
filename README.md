@@ -47,7 +47,7 @@ The widget tree of your test app can be quite large, so rather than include all 
 - Text widgets.
 - Widgets with keys formatted by `gen_key`.
 
-### Expects for widgetTypes
+### Expects for widget types
 
 To pass widget types to `widgetTypes` put them in a `Set`:
 
@@ -66,7 +66,7 @@ And then pass the `Set` to `genExpects`:
 	expect(find.byType(MyHomePage), findsOneWidget);
 	expect(find.byType(Fab), findsOneWidget);
 
-### Expects for Text Widgets
+### Expects for Text widgets
 
 `Text` widgets always generates `expect` statements:
 
@@ -81,6 +81,20 @@ And then pass the `Set` to `genExpects`:
 
 	/// Replace your call to generateExpects with the code below.
 	expect(find.byKey(MainKeys.appBar), findsOneWidget);
+
+## Use after gestures, too
+
+`genExpects` generates `diff` outputs when run in the same widget test. E.g.,
+
+        testWidgets('Confirm all widgets appear', (WidgetTester tester) async {
+            await tester.pumpWidget(const MyApp());
+
+	        genExpects(tester);              // <- Outputs all found expects
+	        tester.tap(find.byType(Fab));
+	        genExpects(tester);              // <- Outputs only expects that changed
+        });
+
+Because the second call to `genExpects` only outputs changes, it is handy for writing tests with gestures and for debugging.
 
 ## That's it!
 
