@@ -1,6 +1,6 @@
 # gen_expects
 
-`gen_expects` is a code generator for expect statements in Flutter widgets tests.
+`gen_expects` is a code generator for expect statements found in Flutter widgets tests.
 
 Rather than generating a `.dart` test file, you insert a `genExpect` call within your widget test:
 
@@ -12,7 +12,7 @@ Rather than generating a `.dart` test file, you insert a `genExpect` call within
         });
     }
 
-and `genExpects` walks the tree and generates expects statements to the debug console or terminal:
+and the `genExpects` function walks the tree and generates expects statements to the debug console or terminal:
 
 	/// Replace your call to generateExpects with the code below.
 	expect(find.byType(MyHomePage), findsOneWidget);
@@ -22,7 +22,7 @@ and `genExpects` walks the tree and generates expects statements to the debug co
 	expect(find.text('0'), findsOneWidget);
 	expect(find.text('Flutter Demo Home Page'), findsOneWidget);
 
-Following the instructions in the first line of the output, you copy the statements and replace your call to `genExpects`. Your test is now:
+Following the instructions in the first line of the output that reads `/// Replace your call to generateExpects with the code below`, you copy the statements and replace your call to `genExpects`. Your test is now:
 
     void main() {
         testWidgets('Confirm all widgets appear', (WidgetTester tester) async {
@@ -37,7 +37,7 @@ Following the instructions in the first line of the output, you copy the stateme
         });
     }
 
-And your done with your test!
+And you have written your widget's first test!
 
 ## The details
 
@@ -47,18 +47,18 @@ The widget tree of your test app can be quite large, so rather than include all 
 - Text widgets.
 - Widgets with keys formatted by `gen_key`.
 
-To pass widget types to `widgetTypes` put them in a set:
+To pass widget types to `widgetTypes` put them in a `Set`:
 
     final Set<Type> myWidgetTypes = <Type>{
       Fab,
       MyHomePage,
     };
 
-And then pass them to `genExpects`:
+And then pass the `Set` to `genExpects`:
 
      await genExpects(tester, widgetTypes: myWidgetTypes);
 
-`genExpects` will generate an `expect` statement for every `widgetType` found:
+`genExpects` generates an `expect` statement for every `widgetType` found:
 
 	/// Replace your call to generateExpects with the code below.
 	expect(find.byType(MyHomePage), findsOneWidget);
