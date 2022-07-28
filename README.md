@@ -47,7 +47,7 @@ The widget tree of your test app can be quite large, so rather than include all 
 - Text widgets.
 - Widgets with keys formatted by `gen_key`.
 
-### Expects for widgetTypes
+**Expects for widgetTypes**
 
 To pass widget types to `widgetTypes` put them in a `Set`:
 
@@ -66,7 +66,7 @@ And then pass the `Set` to `genExpects`:
 	expect(find.byType(MyHomePage), findsOneWidget);
 	expect(find.byType(Fab), findsOneWidget);
 
-### Expects for Text Widgets
+**Expects for Text Widgets**
 
 `Text` widgets always generates `expect` statements:
 
@@ -75,7 +75,7 @@ And then pass the `Set` to `genExpects`:
 	expect(find.text('0'), findsOneWidget);
 	expect(find.text('Flutter Demo Home Page'), findsOneWidget);
 
-### Expects for widgets with keys
+**Expects for widgets with keys**
 
 `genExpects` also creates `expects` for widgets with keys formatted by `gen_key`. Please see the `gen_key` package for more detail:
 
