@@ -12,7 +12,7 @@ Rather than generating a `.dart` test file, you insert a `genExpect` call within
         });
     }
 
-and the `genExpects` function walks the tree and generates expects statements to the debug console or terminal:
+and the `genExpects` function walks the widget tree and outputs expect statements to the debug console or terminal:
 
 	/// Replace your call to generateExpects with the code below.
 	expect(find.byType(MyHomePage), findsOneWidget);
@@ -22,7 +22,7 @@ and the `genExpects` function walks the tree and generates expects statements to
 	expect(find.text('0'), findsOneWidget);
 	expect(find.text('Flutter Demo Home Page'), findsOneWidget);
 
-Following the instructions in the first line of the output that reads `/// Replace your call to generateExpects with the code below`, you copy the statements and replace your call to `genExpects`. Your test is now:
+Following the instructions in the first line of the output that reads `/// Replace your call to generateExpects with the code below`, you copy the statements and paste them into your test:
 
     void main() {
         testWidgets('Confirm all widgets appear', (WidgetTester tester) async {
@@ -37,7 +37,7 @@ Following the instructions in the first line of the output that reads `/// Repla
         });
     }
 
-And you have written your widget's first test!
+And voila! You have written your widget's first test!
 
 ## The details
 
@@ -46,6 +46,8 @@ The widget tree of your test app can be quite large, so rather than include all 
 - Widgets with types passed to the `widgetTypes` parameter.
 - Text widgets.
 - Widgets with keys formatted by `gen_key`.
+
+### Expects for widgetTypes
 
 To pass widget types to `widgetTypes` put them in a `Set`:
 
@@ -64,12 +66,16 @@ And then pass the `Set` to `genExpects`:
 	expect(find.byType(MyHomePage), findsOneWidget);
 	expect(find.byType(Fab), findsOneWidget);
 
+### Expects for Text Widgets
+
 `Text` widgets always generates `expect` statements:
 
 	/// Replace your call to generateExpects with the code below.
 	expect(find.text('You have pushed the button this many times:'), findsOneWidget);
 	expect(find.text('0'), findsOneWidget);
 	expect(find.text('Flutter Demo Home Page'), findsOneWidget);
+
+### Expects for widgets with keys
 
 `genExpects` also creates `expects` for widgets with keys formatted by `gen_key`. Please see the `gen_key` package for more detail:
 
