@@ -1,10 +1,8 @@
 # gen_expects
 
-`gen_expects` is a code generator for expect statements in test.
+`gen_expects` is a code generator for expect statements in Flutter widgets tests.
 
-Rather than generating a `.dart` test file, `gen_expects` runs within your test and output `expect` statements for widgets it finds in the active widget tree.
-
-E.g., you write a test file that calls `genExpects`:
+Rather than generating a `.dart` test file, you insert a `genExpect` call within your widget test:
 
     void main() {
         testWidgets('Confirm all widgets appear', (WidgetTester tester) async {
@@ -14,9 +12,7 @@ E.g., you write a test file that calls `genExpects`:
         });
     }
 
-The `tester.pumpWidget` statement loads the widget tree and then `genExpects` walks the tree and generates expects statements for your custom widgets and widgets with text.
-
-Rather than writing the `expect` statements to file, `genExpects` outputs them to the debug screen or terminal:
+and `genExpects` walks the tree and generates expects statements to the debug console or terminal:
 
 	/// Replace your call to generateExpects with the code below.
 	expect(find.byType(MyHomePage), findsOneWidget);
@@ -45,10 +41,10 @@ And your done with your test!
 
 ## The details
 
-The widget tree of you test app can be quite large, so rather than include all widgets and generating dozens or hundreds of expects, `gen_expects` includes:
+The widget tree of your test app can be quite large, so rather than include all widgets and generating dozens or hundreds of expects, `genExpects` generates `expects` for:
 
-- Widgets with types passed to `widgetTypes`.
-- Widgets with text.
+- Widgets with types passed to the `widgetTypes` parameter.
+- Text widgets.
 - Widgets with keys formatted by `gen_key`.
 
 To pass widget types to `widgetTypes` put them in a set:
@@ -62,20 +58,20 @@ And then pass them to `genExpects`:
 
      await genExpects(tester, widgetTypes: myWidgetTypes);
 
-Which will now include `expect` statements for every `widgetType` found:
+`genExpects` will generate an `expect` statement for every `widgetType` found:
 
 	/// Replace your call to generateExpects with the code below.
 	expect(find.byType(MyHomePage), findsOneWidget);
 	expect(find.byType(Fab), findsOneWidget);
 
-`Text` which are a special case. `genExpects` always generates `expect` statements for `TextWidgets`:
+`Text` widgets always generates `expect` statements:
 
 	/// Replace your call to generateExpects with the code below.
 	expect(find.text('You have pushed the button this many times:'), findsOneWidget);
 	expect(find.text('0'), findsOneWidget);
 	expect(find.text('Flutter Demo Home Page'), findsOneWidget);
 
-`genExpects` will also always create `expects` for widgets with keys formated by `gen_keys`. Please see the `gen_keys` package for more detail:
+`genExpects` also creates `expects` for widgets with keys formatted by `gen_key`. Please see the `gen_key` package for more detail:
 
 	/// Replace your call to generateExpects with the code below.
 	expect(find.byKey(MainKeys.appBar), findsOneWidget);
