@@ -1,7 +1,8 @@
 name: gen_expects
-description: Code generator for widget test expect statements
-
-version: 0.0.1
+description: Code generator for testing expect statements.
+version: 0.1.0
+repository: https://github.com/buttonsrtoys/gen_expects
+issue_tracker: https://github.com/buttonsrtoys/gen_expects/issues
 
 environment:
   sdk: ">=2.17.6 <3.0.0"

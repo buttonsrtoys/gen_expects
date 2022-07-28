@@ -1,4 +1,4 @@
-import 'widget_meta.dart';
+part of './gen_expects.dart';
 
 /// Meta data for generating an expect() statement
 class ExpectMeta {

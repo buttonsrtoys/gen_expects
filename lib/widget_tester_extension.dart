@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+part of 'gen_expects.dart';
 
 /// Holds the value of the class that has members that are strings. Typically, this is the S class in i18n.dart
 /// of the intl package. However, it can by any class of the structure:

@@ -1,8 +1,4 @@
-import 'package:flutter/widgets.dart';
-import 'package:flutter_test/flutter_test.dart';
-
-import 'matcher_types.dart';
-import 'register_types.dart';
+part of 'gen_expects.dart';
 
 /// Meta data for widget selected for inclusion in tests
 class WidgetMeta {

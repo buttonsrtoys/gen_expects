@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gen_expects/generate_widget_tests.dart';
-import 'package:gen_expects/register_types.dart';
+import 'package:gen_expects/gen_expects.dart';
 
 MaterialApp _buildApp(Widget widget) {
   return MaterialApp(

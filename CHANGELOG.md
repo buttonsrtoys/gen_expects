@@ -1,2 +1,2 @@
-## 0.0.1
-`gen_expects` package published
+## 0.1.0
+Initial release.

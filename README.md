@@ -1,67 +1,88 @@
-# gen_key
+# gen_expects
 
-`gen_key` is a code generator for Flutter widget keys files. 
+`gen_expects` is a code generator for expect statements in test.
 
-Widget keys must be of the form `KeyClassName.keyName`:
+Rather than generating a `.dart` test file, `gen_expects` runs within your test and output `expect` statements for widgets it finds in the active widget tree.
 
-    Text('Hello', key: MyWidgetKeys.helloText);
+E.g., you write a test file that calls `genExpects`:
 
-To generate widget keys, first reference the key in your widget:
+    void main() {
+        testWidgets('Confirm all widgets appear', (WidgetTester tester) async {
+            await tester.pumpWidget(const MyApp());
 
-    class MyWidget {
-      @override
-      Widget build(BuildContext context) {
-        return Text('Hello', key: MyWidgetKeys.helloText);    // <- Your key reference
-      }
+            await genExpects(tester);
+        });
     }
 
-Then annotate the class with `@GenKey()`:
+The `tester.pumpWidget` statement loads the widget tree and then `genExpects` walks the tree and generates expects statements for your custom widgets and widgets with text.
 
-    @GenKey()      // <- Add annotation
-    class MyWidget {
-      @override
-      Widget build(BuildContext context) {
-        return Text('Hello', key: MyWidgetKeys.helloText);
-      }
+Rather than writing the `expect` statements to file, `genExpects` outputs them to the debug screen or terminal:
+
+	/// Replace your call to generateExpects with the code below.
+	expect(find.byType(MyHomePage), findsOneWidget);
+	expect(find.byKey(MainKeys.appBar), findsOneWidget);
+	expect(find.byType(Fab), findsOneWidget);
+	expect(find.text('You have pushed the button this many times:'), findsOneWidget);
+	expect(find.text('0'), findsOneWidget);
+	expect(find.text('Flutter Demo Home Page'), findsOneWidget);
+
+Following the instructions in the first line of the output, you copy the statements and replace your call to `genExpects`. Your test is now:
+
+    void main() {
+        testWidgets('Confirm all widgets appear', (WidgetTester tester) async {
+            await tester.pumpWidget(const MyApp());
+
+	        expect(find.byType(MyHomePage), findsOneWidget);
+	        expect(find.byKey(MainKeys.appBar), findsOneWidget);
+	        expect(find.byType(Fab), findsOneWidget);
+	        expect(find.text('You have pushed the button this many times:'), findsOneWidget);
+	        expect(find.text('0'), findsOneWidget);
+	        expect(find.text('Flutter Demo Home Page'), findsOneWidget);
+        });
     }
 
-`gen_key` parses the code and generates a separate key class that contains the keys.
+And your done with your test!
 
-    class MyWidgetKeys {
-      static const String _prefix = '__MyWidgetKeys__';
-      static const Key helloText = Key('${_prefix}helloText');
-    }
+## The details
 
-The key class is a separate file that ends in `.keys.dart` that accompanies your class's `.dart` file. So, the keys in `my_widget.dart` are generated to `my_widget.keys.dart`. This is done by placing the `part` command at the top of your Dart file:
+The widget tree of you test app can be quite large, so rather than include all widgets and generating dozens or hundreds of expects, `gen_expects` includes:
 
-    part `my_widget.keys.dart`     // Add 'part'
+- Widgets with types passed to `widgetTypes`.
+- Widgets with text.
+- Widgets with keys formatted by `gen_key`.
 
-    @GenKey()
-    class MyWidget {
-      @override
-      Widget build(BuildContext context) {
-        return Text('Hello', key: MyWidgetKeys.helloText);
-      }
-    }
+To pass widget types to `widgetTypes` put them in a set:
 
-Sometimes a class references references keys your don't want. In that cases, give all the class names you want to the `GenKey` command:
+    final Set<Type> myWidgetTypes = <Type>{
+      Fab,
+      MyHomePage,
+    };
 
-    @GenKey((keyClasses: ['MyWidgetKeys'])     // <- Specify which keys to generate here
-    class MyWidget {
-      @override
-      Widget build(BuildContext context) {
-        return Row(children: <Widget> [
-          Text('Hello', key: MyWidgetKeys.helloText),    // <- You want key generation for this key
-          Text('There', key: SomeoneElsesWidgetKeys.buttonText),     // <- But not for this one
-        ]);
-      }
-    }
+And then pass them to `genExpects`:
 
-To generate the key files, run `flutter pub run build runner build`.
+     await genExpects(tester, widgetTypes: myWidgetTypes);
 
-## Example
+Which will now include `expect` statements for every `widgetType` found:
 
-For a more detailed example, check out [the example]() in the package for large example.
+	/// Replace your call to generateExpects with the code below.
+	expect(find.byType(MyHomePage), findsOneWidget);
+	expect(find.byType(Fab), findsOneWidget);
+
+`Text` which are a special case. `genExpects` always generates `expect` statements for `TextWidgets`:
+
+	/// Replace your call to generateExpects with the code below.
+	expect(find.text('You have pushed the button this many times:'), findsOneWidget);
+	expect(find.text('0'), findsOneWidget);
+	expect(find.text('Flutter Demo Home Page'), findsOneWidget);
+
+`genExpects` will also always create `expects` for widgets with keys formated by `gen_keys`. Please see the `gen_keys` package for more detail:
+
+	/// Replace your call to generateExpects with the code below.
+	expect(find.byKey(MainKeys.appBar), findsOneWidget);
+
+## That's it!
+
+For questions or anything else `gen_expects`, feel free to create an issue of contact me.
 
 
 

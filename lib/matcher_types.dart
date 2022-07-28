@@ -1,4 +1,4 @@
-import 'package:flutter_test/flutter_test.dart';
+part of 'gen_expects.dart';
 
 /// Types of matchers used in 'expect'
 enum MatcherTypes {
