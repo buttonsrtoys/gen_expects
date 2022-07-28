@@ -75,7 +75,7 @@ And then pass the `Set` to `genExpects`:
 	expect(find.text('0'), findsOneWidget);
 	expect(find.text('Flutter Demo Home Page'), findsOneWidget);
 
-**Expects for widgets with keys**
+### Expects for widgets with keys
 
 `genExpects` also creates `expects` for widgets with keys formatted by `gen_key`. Please see the `gen_key` package for more detail:
 
