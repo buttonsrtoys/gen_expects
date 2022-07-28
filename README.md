@@ -90,7 +90,7 @@ And then pass the `Set` to `genExpects`:
             await tester.pumpWidget(const MyApp());
 
 	        genExpects(tester);              // <- Outputs all found expects
-	        tester.tap(find.byType(Fab));
+	        tester.tap(find.byType(Fab));    // <- Gesture
 	        genExpects(tester);              // <- Outputs only expects that changed
         });
 
