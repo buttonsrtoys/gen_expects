@@ -4,7 +4,7 @@ Example program for `gen_expects`
 
 ## To run
 
-In the debugger, open `/example/test/widget_test.dart` and run the tester. Or, in the terminal, navigate to `/example/test` and enter `flutter test`. The `expect` statements will be generated in the debugger/terminal respectively:
+In the debugger, open `/example/test/widget_test.dart` and run the tester. Or, in the terminal, navigate to `/example/test` and enter `flutter test`. The `expect` statements will be generated in the debug console or terminal respectively:
 
 	/// Replace your call to generateExpects with the code below.
 	expect(find.byType(MyHomePage), findsOneWidget);
