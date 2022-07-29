@@ -11,8 +11,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  gen_key:
-    path: ../../gen_key/
   gen_expects:
     path: ../
 

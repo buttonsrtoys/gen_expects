@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gen_key/gen_key.dart';
 
 part 'main.keys.dart';
 
@@ -7,18 +6,17 @@ void main() {
   runApp(const MyApp());
 }
 
-@GenKey()
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'example',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(
-        title: 'Flutter Demo Home Page',
+        title: 'example',
       ),
     );
   }
@@ -33,7 +31,6 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-@GenKey()
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
