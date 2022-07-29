@@ -59,13 +59,16 @@ void main() {
   });
 
   setUpAll(() async {
-    await addTextToIntlReverseLookup(stringContent: text, stringId: textStringId);
-    return addTextToIntlReverseLookup(stringContent: text, stringId: anotherTextStringId);
+    await addTextToIntlReverseLookup(
+        stringContent: text, stringId: textStringId);
+    return addTextToIntlReverseLookup(
+        stringContent: text, stringId: anotherTextStringId);
   });
 
   /// Tests require compareWithPrevious=false to ensure behavior does not span calls to testWidget
   group('Widget tests for different Finders', () {
-    testWidgets('Text not in lookup map passed to the "text:" parameter of expectWidget, key passed to "key:"',
+    testWidgets(
+        'Text not in lookup map passed to the "text:" parameter of expectWidget, key passed to "key:"',
         (WidgetTester tester) async {
       await tester.pumpWidget(_buildApp(textWidgetWithKeyAndNotInLookup));
       await tester.pumpAndSettle();
@@ -73,10 +76,14 @@ void main() {
       final output = await genExpectsOutput(tester, compareWithPrevious: false);
 
       expect(output.contains(instructions), true);
-      expect(output.contains("\ttester.expectWidget(text: '$textNotInLookup', key: $keyName);"), true);
+      expect(
+          output.contains(
+              "\ttester.expectWidget(text: '$textNotInLookup', key: $keyName);"),
+          true);
     });
 
-    testWidgets('Text in lookup map passed to the "intl:" parameter of expectWidget, key passed to "key:"',
+    testWidgets(
+        'Text in lookup map passed to the "intl:" parameter of expectWidget, key passed to "key:"',
         (WidgetTester tester) async {
       await tester.pumpWidget(_buildApp(textWidgetWithKey));
       await tester.pumpAndSettle();
@@ -84,7 +91,10 @@ void main() {
       final output = await genExpectsOutput(tester, compareWithPrevious: false);
 
       expect(output.contains(instructions), true);
-      expect(output.contains("\ttester.expectWidget(intl: (s) => s.$textStringId, key: $keyName);"), true);
+      expect(
+          output.contains(
+              "\ttester.expectWidget(intl: (s) => s.$textStringId, key: $keyName);"),
+          true);
     });
 
     testWidgets(
@@ -93,10 +103,13 @@ void main() {
         await tester.pumpWidget(_buildApp(textButtonWithKey));
         await tester.pumpAndSettle();
 
-        final output = await genExpectsOutput(tester, compareWithPrevious: false);
+        final output =
+            await genExpectsOutput(tester, compareWithPrevious: false);
 
         expect(output.contains(instructions), true);
-        expect(output.contains("\texpect(find.byKey($keyName), findsOneWidget);"), true);
+        expect(
+            output.contains("\texpect(find.byKey($keyName), findsOneWidget);"),
+            true);
       },
     );
 
@@ -106,10 +119,14 @@ void main() {
         await tester.pumpWidget(_buildApp(textWidgetNoKey));
         await tester.pumpAndSettle();
 
-        final output = await genExpectsOutput(tester, compareWithPrevious: false);
+        final output =
+            await genExpectsOutput(tester, compareWithPrevious: false);
 
         expect(output.contains(instructions), true);
-        expect(output.contains("\ttester.expectWidget(intl: (s) => s.$textStringId);"), true);
+        expect(
+            output.contains(
+                "\ttester.expectWidget(intl: (s) => s.$textStringId);"),
+            true);
       },
     );
 
@@ -119,10 +136,14 @@ void main() {
         await tester.pumpWidget(_buildApp(textWidgetUpperCase));
         await tester.pumpAndSettle();
 
-        final output = await genExpectsOutput(tester, compareWithPrevious: false);
+        final output =
+            await genExpectsOutput(tester, compareWithPrevious: false);
 
         expect(output.contains(instructions), true);
-        expect(output.contains("\ttester.expectWidget(intl: (s) => s.$textStringId.toUpperCase());"), true);
+        expect(
+            output.contains(
+                "\ttester.expectWidget(intl: (s) => s.$textStringId.toUpperCase());"),
+            true);
       },
     );
 
@@ -132,15 +153,23 @@ void main() {
         await tester.pumpWidget(_buildApp(textWidgetNoKey));
         await tester.pumpAndSettle();
 
-        final output = await genExpectsOutput(tester, compareWithPrevious: false);
+        final output =
+            await genExpectsOutput(tester, compareWithPrevious: false);
 
         expect(output.contains(instructions), true);
-        expect(output.contains("\ttester.expectWidget(intl: (s) => s.$textStringId);"), true);
-        expect(output.contains("\ttester.expectWidget(intl: (s) => s.$anotherTextStringId);"), true);
+        expect(
+            output.contains(
+                "\ttester.expectWidget(intl: (s) => s.$textStringId);"),
+            true);
+        expect(
+            output.contains(
+                "\ttester.expectWidget(intl: (s) => s.$anotherTextStringId);"),
+            true);
       },
     );
 
-    testWidgets('registerTypes results in statement: expect find.byType with the registered type',
+    testWidgets(
+        'registerTypes results in statement: expect find.byType with the registered type',
         (WidgetTester tester) async {
       await tester.pumpWidget(_buildApp(textButtonNoKey));
       await tester.pumpAndSettle();
@@ -148,10 +177,14 @@ void main() {
       final output = await genExpectsOutput(tester, compareWithPrevious: false);
 
       expect(output.contains(instructions), true);
-      expect(output.contains('\texpect(find.byType(MyCustomClass), findsOneWidget);'), true);
+      expect(
+          output.contains(
+              '\texpect(find.byType(MyCustomClass), findsOneWidget);'),
+          true);
     });
 
-    testWidgets('two equal widgets: one test (not two)', (WidgetTester tester) async {
+    testWidgets('two equal widgets: one test (not two)',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         _buildApp(
           Column(
@@ -172,7 +205,8 @@ void main() {
 
       int expectCount = 0;
       output.forEach((str) {
-        if (str == '\texpect(find.byType(TextButton), findsWidgets);') expectCount++;
+        if (str == '\texpect(find.byType(TextButton), findsWidgets);')
+          expectCount++;
       });
       expect(expectCount, 1);
     });

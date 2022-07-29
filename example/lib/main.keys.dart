@@ -7,6 +7,6 @@ part of 'main.dart';
 // **************************************************************************
 
 class MainKeys {
-	static const String _prefix = '__MainKeys__';
-	static const Key appBar = Key('${_prefix}appBar');
+  static const String _prefix = '__MainKeys__';
+  static const Key appBar = Key('${_prefix}appBar');
 }

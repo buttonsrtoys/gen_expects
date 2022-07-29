@@ -11,13 +11,17 @@ class WidgetMeta {
     _updateWidgetText();
     _updateMatcher();
 
-    assert(widgetKey.isNotEmpty || isWidgetTypeRegistered || widgetText.isNotEmpty, 'WidgetMeta widget is not valid');
+    assert(
+        widgetKey.isNotEmpty || isWidgetTypeRegistered || widgetText.isNotEmpty,
+        'WidgetMeta widget is not valid');
   }
 
   @override
   bool operator ==(Object other) {
     if (other is WidgetMeta) {
-      return widgetKey == other.widgetKey && widgetText == other.widgetText && widgetType == other.widgetType;
+      return widgetKey == other.widgetKey &&
+          widgetText == other.widgetText &&
+          widgetType == other.widgetType;
     } else {
       return false;
     }
@@ -98,7 +102,8 @@ class WidgetMeta {
         final strippedWidgetKey = originalWidgetKey.replaceAll("'", '');
         final startIndex = strippedWidgetKey.indexOf('[<');
         final endIndex = strippedWidgetKey.indexOf('>]');
-        final trimmedWidgetKey = strippedWidgetKey.substring(startIndex + 2, endIndex);
+        final trimmedWidgetKey =
+            strippedWidgetKey.substring(startIndex + 2, endIndex);
         final words = trimmedWidgetKey.split(RegExp("__|_"));
         words.removeWhere((word) => word == '');
 
@@ -115,5 +120,7 @@ class WidgetMeta {
   }
 
   bool _isWidgetKeyProperlyFormatted(String originalWidgetKey) =>
-      originalWidgetKey.contains('__') && originalWidgetKey.contains('[<') && originalWidgetKey.contains('>]');
+      originalWidgetKey.contains('__') &&
+      originalWidgetKey.contains('[<') &&
+      originalWidgetKey.contains('>]');
 }

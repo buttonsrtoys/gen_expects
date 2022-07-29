@@ -47,5 +47,8 @@ void addToReverseLookup({
 }
 
 String _removeNonJsonCharacters(String enString) {
-  return enString.replaceAll('\\\$', '\$').replaceAll('\\*', '*').replaceAll('\\"', '');
+  return enString
+      .replaceAll('\\\$', '\$')
+      .replaceAll('\\*', '*')
+      .replaceAll('\\"', '');
 }
