@@ -1,6 +1,6 @@
 # gen_expects
 
-`gen_expects` is a code generator for expect statements found in Flutter widgets tests.
+`gen_expects` walks the widget tree and generates expect statements for Flutter widgets tests.
 
 Rather than generating a `.dart` test file, you insert a `genExpect` call within your widget test:
 
