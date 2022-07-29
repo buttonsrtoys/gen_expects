@@ -1,6 +1,6 @@
 # gen_expects
 
-`gen_expects` walks the widget tree and generates expect statements for Flutter widgets tests.
+`gen_expects` is a code generator that walks the widget tree and generates expect statements for Flutter widgets tests.
 
 You insert a call to `genExpects` into your widget test:
 
@@ -12,7 +12,7 @@ You insert a call to `genExpects` into your widget test:
         });
     }
 
-And `genExpects` walks the widget tree and generates expect statements. Rather than generating a `.dart` test file, `genExpects` outputs to the debug console or terminal:
+And `genExpects` walks the widget tree of your test app and generates expect statements. Rather than generating a `.dart` test file, `genExpects` outputs to the debug console or terminal:
 
 	/// Replace your call to generateExpects with the code below.
 	expect(find.byType(MyHomePage), findsOneWidget);
