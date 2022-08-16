@@ -16,7 +16,7 @@ Insert a call to `genExpects` into your widget test:
         });
     }
 
-And `genExpects` walks the widget tree of your test app and generates expect statements. Rather than generating a `.dart` test file, `genExpects` outputs to the debug console or terminal:
+GenExpects walks the widget tree of your test app and generates expect statements. Rather than generating a `.dart` test file, GenExpects outputs to the debug console or terminal:
 
 	/// Replace your call to generateExpects with the code below.
 	expect(find.byType(MyHomePage), findsOneWidget);
@@ -45,7 +45,7 @@ And voila! You have written your widget's first test!
 
 ## The details
 
-The widget tree of your test app can be quite large, so rather than include all widgets and generating dozens or hundreds of expects, `genExpects` generates `expects` for:
+The widget tree of your test app can be quite large, so rather than include all widgets and generating dozens or hundreds of expects, GenExpects generates `expects` for:
 
 - Widgets with types passed to the `widgetTypes` parameter.
 - Text widgets.
@@ -64,7 +64,7 @@ And then pass the `Set` to `genExpects`:
 
      await genExpects(tester, widgetTypes: myWidgetTypes);
 
-`genExpects` generates an `expect` statement for every `widgetType` found:
+GenExpects generates an `expect` statement for every `widgetType` found:
 
 	/// Replace your call to generateExpects with the code below.
 	expect(find.byType(MyHomePage), findsOneWidget);
@@ -81,14 +81,14 @@ And then pass the `Set` to `genExpects`:
 
 ### Expects for widgets with keys
 
-`genExpects` also creates `expects` for widgets with keys formatted by `gen_key`. Please see the `gen_key` package for more detail:
+GenExpects also creates `expects` for widgets with keys formatted by `gen_key`. Please see the `gen_key` package for more detail:
 
 	/// Replace your call to generateExpects with the code below.
 	expect(find.byKey(MainKeys.appBar), findsOneWidget);
 
 ## Use after gestures, too!
 
-`genExpects` generates `diff` outputs when run in the same widget test. E.g.,
+GenExpects generates `diff` outputs when run in the same widget test. E.g.,
 
         testWidgets('Confirm all widgets appear', (WidgetTester tester) async {
             await tester.pumpWidget(const MyApp());
