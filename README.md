@@ -4,7 +4,9 @@
 
 Code generator that walks the widget tree of a test app and generates expect statements for Flutter widgets tests.
 
-You insert a call to `genExpects` into your widget test:
+## How to use GenExpects
+
+Insert a call to `genExpects` into your widget test:
 
     void main() {
         testWidgets('Confirm all widgets appear', (WidgetTester tester) async {
@@ -84,7 +86,7 @@ And then pass the `Set` to `genExpects`:
 	/// Replace your call to generateExpects with the code below.
 	expect(find.byKey(MainKeys.appBar), findsOneWidget);
 
-## Use after gestures, too
+## Use after gestures, too!
 
 `genExpects` generates `diff` outputs when run in the same widget test. E.g.,
 
@@ -100,7 +102,7 @@ Because the second call to `genExpects` only outputs changes, it is handy for wr
 
 ## That's it!
 
-For questions or anything else `gen_expects`, feel free to create an issue of contact me.
+For questions or anything else GenExpects, feel free to create an issue of contact me.
 
 
 
