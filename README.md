@@ -49,7 +49,7 @@ The widget tree of your test app can be quite large, so rather than include all 
 
 - Widgets with types passed to the `widgetTypes` parameter.
 - Text widgets.
-- Widgets with keys formatted by `gen_key`.
+- Widgets with keys formatted by `gen_keys`.
 
 ### Expects for widget types
 
@@ -81,7 +81,7 @@ GenExpects generates an `expect` statement for every `widgetType` found:
 
 ### Expects for widgets with keys
 
-GenExpects also creates `expects` for widgets with keys formatted by `gen_key`. Please see the `gen_key` package for more detail:
+GenExpects also creates `expects` for widgets with keys formatted by `gen_keys`. Please see the `gen_keys` package for more detail:
 
 	/// Replace your call to generateExpects with the code below.
 	expect(find.byKey(MainKeys.appBar), findsOneWidget);
@@ -102,7 +102,4 @@ Because the second call to `genExpects` only outputs changes, it is handy for wr
 
 ## That's it!
 
-For questions or anything else GenExpects, feel free to create an issue of contact me.
-
-
-
+For questions or anything else GenExpects, feel free to create an issue or contact me.
