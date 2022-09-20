@@ -2,20 +2,20 @@ part of 'gen_expects.dart';
 
 /// Types of matchers used in 'expect'
 enum MatcherTypes {
-  FINDS_NOTHING,
-  FINDS_ONE_WIDGET,
-  FINDS_WIDGETS,
-  UNKNOWN,
+  findsNothing,
+  findsOneWidget,
+  findsWidgets,
+  unknown,
 }
 
 extension MatcherTypesExtension on MatcherTypes {
   Matcher get matcher {
     switch (this) {
-      case MatcherTypes.FINDS_NOTHING:
+      case MatcherTypes.findsNothing:
         return findsNothing;
-      case MatcherTypes.FINDS_ONE_WIDGET:
+      case MatcherTypes.findsOneWidget:
         return findsOneWidget;
-      case MatcherTypes.FINDS_WIDGETS:
+      case MatcherTypes.findsWidgets:
         return findsWidgets;
       default:
         return findsNothing;
@@ -24,13 +24,13 @@ extension MatcherTypesExtension on MatcherTypes {
 
   String get matcherName {
     switch (this) {
-      case MatcherTypes.FINDS_NOTHING:
+      case MatcherTypes.findsNothing:
         return 'findsNothing';
-      case MatcherTypes.FINDS_ONE_WIDGET:
+      case MatcherTypes.findsOneWidget:
         return 'findsOneWidget';
-      case MatcherTypes.FINDS_WIDGETS:
+      case MatcherTypes.findsWidgets:
         return 'findsWidgets';
-      case MatcherTypes.UNKNOWN:
+      case MatcherTypes.unknown:
       default:
         return '(Unknown)';
     }

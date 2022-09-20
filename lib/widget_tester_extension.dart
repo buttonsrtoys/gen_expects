@@ -26,7 +26,7 @@ extension WidgetTesterExtension on WidgetTester {
 
   /// Returns a [Finder] for Widgets that match one or more parameters
   ///
-  /// [intl] receives the `intl` package [S] object and returns the String to find.
+  /// [intl] receives the `intl` package `S` object and returns the String to find.
   /// [text] is a String to find.
   /// [widgetType] is the Type of widget to find.
   /// [key] is the key to find.
@@ -41,8 +41,7 @@ extension WidgetTesterExtension on WidgetTester {
   }) {
     assert(intl == null || text == null);
 
-    final Type? soughtType =
-        key == null && widgetType == null ? Text : widgetType;
+    final Type? soughtType = key == null && widgetType == null ? Text : widgetType;
 
     late Finder finder;
 
@@ -78,8 +77,7 @@ extension WidgetTesterExtension on WidgetTester {
     Key? key,
     Matcher matcher = findsOneWidget,
   }) {
-    final Finder finder =
-        findBy(intl: intl, text: text, widgetType: widgetType, key: key);
+    final Finder finder = findBy(intl: intl, text: text, widgetType: widgetType, key: key);
     expect(finder, matcher);
   }
 
@@ -91,8 +89,7 @@ extension WidgetTesterExtension on WidgetTester {
     Key? key,
     bool shouldPumpAndSettle = true,
   }) async {
-    final Finder finder =
-        findBy(intl: intl, text: text, widgetType: widgetType, key: key);
+    final Finder finder = findBy(intl: intl, text: text, widgetType: widgetType, key: key);
     expect(finder, findsOneWidget);
     await tap(finder);
     if (shouldPumpAndSettle) {
