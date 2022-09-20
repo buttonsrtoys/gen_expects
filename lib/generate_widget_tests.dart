@@ -120,6 +120,7 @@ Future<List<String>> genExpectsOutput(
     return text;
   }
 
+  // ignore: use_build_context_synchronously
   final widgets = _getWidgetsForExpects(context);
 
   if (widgets.isEmpty) {
@@ -233,9 +234,9 @@ bool _isProperlyFormattedKey(Widget widget) => widget.key.toString().indexOf('[<
 
 /// The order to output expects
 enum _ExpectTypeOrder {
-  NO_TEXT,
-  INTL_TEXT,
-  NON_INTL_TEXT,
+  noText,
+  intlText,
+  nonIntlText,
 }
 
 /// Generates expect() strings from [WidgetMeta]s. Sorts strings in order of [_ExpectTypeOrder]
@@ -248,23 +249,23 @@ List<String> _expectStringsFromWidgetMetas(List<WidgetMeta> widgetMetas) {
     expectMetas.add(expectMetaFromWidgetMeta);
   }
 
-  int _sortOrder(ExpectMeta expectMeta) {
-    _ExpectTypeOrder result = _ExpectTypeOrder.NO_TEXT;
+  int sortOrder(ExpectMeta expectMeta) {
+    _ExpectTypeOrder result = _ExpectTypeOrder.noText;
     if (expectMeta.widgetMeta.hasText) {
-      result = _ExpectTypeOrder.INTL_TEXT;
+      result = _ExpectTypeOrder.intlText;
       if (!expectMeta.isIntl) {
-        result = _ExpectTypeOrder.NON_INTL_TEXT;
+        result = _ExpectTypeOrder.nonIntlText;
       }
     }
     return result.index;
   }
 
-  expectMetas.sort((a, b) => _sortOrder(a).compareTo(_sortOrder(b)));
+  expectMetas.sort((a, b) => sortOrder(a).compareTo(sortOrder(b)));
 
   bool generatedNonIntlTextComment = false;
 
   for (final expectMeta in expectMetas) {
-    if (!generatedNonIntlTextComment && _sortOrder(expectMeta) == 2) {
+    if (!generatedNonIntlTextComment && sortOrder(expectMeta) == 2) {
       generatedNonIntlTextComment = true;
       expectStrings.add('\t// No reverse lookup found for the text in the expect statements below');
     }
@@ -400,7 +401,7 @@ List<Widget> _getWidgetsForExpects(
 ) {
   final widgets = <Widget>[];
 
-  bool _isEmptyTextWidget(Widget widget) {
+  bool isEmptyTextWidget(Widget widget) {
     final bool result;
     if (widget is Text && (widget.data == null || widget.data == '')) {
       result = true;
@@ -410,9 +411,9 @@ List<Widget> _getWidgetsForExpects(
     return result;
   }
 
-  bool _isWidgetForExpect(Widget widget) {
+  bool isWidgetForExpect(Widget widget) {
     final bool result;
-    if (_isEmptyTextWidget(widget)) {
+    if (isEmptyTextWidget(widget)) {
       result = false;
     } else {
       result = (widget.key != null && widget.key.toString().contains('__')) ||
@@ -424,7 +425,7 @@ List<Widget> _getWidgetsForExpects(
 
   void visitor(Element element) {
     final widget = element.widget;
-    if (_isWidgetForExpect(widget)) {
+    if (isWidgetForExpect(widget)) {
       widgets.add(widget);
     }
     element.visitChildren(visitor);
@@ -488,7 +489,7 @@ List<String> _generateExpectWidgets(WidgetMeta widgetMeta, int attributesToMatch
   List<String>? intlKeys;
   int attributesWrittenToBuffer = 0;
 
-  void _addTextAttributeToBuffer() {
+  void addTextAttributeToBuffer() {
     if (_haveEnString(widgetMeta.widgetText)) {
       intlKeys = _enStringReverseLookup[widgetMeta.widgetText];
       if (intlKeys != null) {
@@ -499,42 +500,42 @@ List<String> _generateExpectWidgets(WidgetMeta widgetMeta, int attributesToMatch
     }
   }
 
-  void _addTypeAttributeToBuffer() {
+  void addTypeAttributeToBuffer() {
     buffer.write('widgetType: ${widgetMeta.widgetType}');
   }
 
-  void _addKeyAttributeToBuffer() {
+  void addKeyAttributeToBuffer() {
     buffer.write("key: ${widgetMeta.widgetKey}");
   }
 
-  void _addMatcherAttributeToBuffer() {
+  void addMatcherAttributeToBuffer() {
     buffer.write(', matcher: ${widgetMeta.matcherType.matcherName},');
   }
 
-  bool _haveMoreAttributesToProcess() => ++attributesWrittenToBuffer < attributesToMatch;
+  bool haveMoreAttributesToProcess() => ++attributesWrittenToBuffer < attributesToMatch;
 
   buffer.write('\ttester.expectWidget(');
 
   if (widgetMeta.widgetText.isNotEmpty) {
-    _addTextAttributeToBuffer();
-    if (_haveMoreAttributesToProcess()) {
+    addTextAttributeToBuffer();
+    if (haveMoreAttributesToProcess()) {
       buffer.write(', ');
     }
   }
 
   if (widgetMeta.isWidgetTypeRegistered) {
-    _addTypeAttributeToBuffer();
-    if (_haveMoreAttributesToProcess()) {
+    addTypeAttributeToBuffer();
+    if (haveMoreAttributesToProcess()) {
       buffer.write(', ');
     }
   }
 
   if (widgetMeta.widgetKey.isNotEmpty) {
-    _addKeyAttributeToBuffer();
+    addKeyAttributeToBuffer();
   }
 
   if (widgetMeta.matcherType.matcher != findsOneWidget) {
-    _addMatcherAttributeToBuffer();
+    addMatcherAttributeToBuffer();
   }
 
   buffer.write(');');
