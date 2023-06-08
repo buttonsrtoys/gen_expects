@@ -64,7 +64,7 @@ class WidgetMeta {
 
   /// Perform a test on the widget and store its result
   void _updateMatcher() {
-    matcherType = MatcherTypes.UNKNOWN;
+    matcherType = MatcherTypes.unknown;
 
     for (final currentMatcherType in MatcherTypes.values) {
       try {

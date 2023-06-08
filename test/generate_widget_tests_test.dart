@@ -172,9 +172,11 @@ void main() {
       expect(output.contains(instructions), true);
 
       int expectCount = 0;
-      output.forEach((str) {
-        if (str == '\texpect(find.byType(TextButton), findsWidgets);') expectCount++;
-      });
+      for (final str in output) {
+        if (str == '\texpect(find.byType(TextButton), findsWidgets);') {
+          expectCount++;
+        }
+      }
       expect(expectCount, 1);
     });
   });

@@ -3,7 +3,6 @@ import 'dart:io';
 
 Future<Map<String, List<String>>> loadEnStringReverseLookup(String path) async {
   Future<String> loadData() async {
-    final dir = Directory.current.path;
     final File file = File(path);
     return file.readAsStringSync();
   }

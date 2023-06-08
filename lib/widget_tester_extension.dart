@@ -14,7 +14,6 @@ extension WidgetTesterExtension on WidgetTester {
     Finder finder,
     String Function(dynamic s) intl,
   ) {
-    final BuildContext context = element(finder.first);
     return intl(_s);
   }
 
