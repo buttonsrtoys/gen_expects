@@ -1,3 +1,6 @@
+## 0.1.6
+Upgraded dependencies.
+
 ## 0.1.5
 Formatting.
 
