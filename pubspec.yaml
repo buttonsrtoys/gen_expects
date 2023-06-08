@@ -1,6 +1,6 @@
 name: gen_expects
 description: Code generator that walks the widget tree of the test app and outputs expect statements for widget tests.
-version: 0.1.5
+version: 0.1.6
 repository: https://github.com/buttonsrtoys/gen_expects
 issue_tracker: https://github.com/buttonsrtoys/gen_expects/issues
 
@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  analyzer: ^4.2.0
+  analyzer: ^5.13.0
   flutter_test:
     sdk: flutter
 
