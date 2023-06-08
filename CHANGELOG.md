@@ -1,2 +1,5 @@
+## 0.0.2
+Upgraded dependencies.
+
 ## 0.0.1
-`gen_expects` package published
+Published.

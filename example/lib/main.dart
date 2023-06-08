@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gen_key/gen_key.dart';
+import 'package:gen_keys/gen_keys.dart';
 
 part 'main.keys.dart';
 
@@ -7,7 +7,7 @@ void main() {
   runApp(const MyApp());
 }
 
-@GenKey()
+@GenKeys()
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
@@ -34,7 +34,7 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-@GenKey()
+@GenKeys()
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
@@ -61,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Text(
               '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              style: Theme.of(context).textTheme.headlineMedium,
               key: MainKeys.count,
             ),
           ],

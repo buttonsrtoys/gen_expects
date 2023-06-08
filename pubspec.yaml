@@ -1,7 +1,7 @@
 name: gen_expects
 description: Code generator for widget test expect statements
 
-version: 0.0.1
+version: 0.0.2
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
