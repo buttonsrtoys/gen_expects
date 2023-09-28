@@ -1,4 +1,4 @@
-## 0.1.7
+## 0.2.0
 Added support for enum keys.
 
 ## 0.1.6
