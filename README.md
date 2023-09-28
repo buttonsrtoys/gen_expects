@@ -85,7 +85,7 @@ GenExpects generates an `expect` statement for every `widgetType` found:
 GenExpects supports `ValueKey` for enum types. Typically, if you have a class named `MyClass`, 
 create an `enum` for storing keys. GenExpects looks for keys in enum format and exports them to 
 expects. (Note that GenExpects generates `expect` statements only for public keys . Private enums
-(e.g., `_MyClassKeys`) are not supported. 
+(e.g., `_MyClassKeys`) are not supported.)
 
 To created enum keys:
 
