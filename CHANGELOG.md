@@ -1,3 +1,6 @@
+## 0.1.7
+Added support for enum keys.
+
 ## 0.1.6
 Upgraded dependencies.
 

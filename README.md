@@ -49,6 +49,7 @@ The widget tree of your test app can be quite large, so rather than include all 
 
 - Widgets with types passed to the `widgetTypes` parameter.
 - Text widgets.
+- Widgets with keys of type `ValueKey(<enum value>)`
 - Widgets with keys formatted by [gen_keys](https://pub.dev/packages/gen_keys).
 
 ### Expects for widget types
@@ -78,6 +79,27 @@ GenExpects generates an `expect` statement for every `widgetType` found:
 	expect(find.text('You have pushed the button this many times:'), findsOneWidget);
 	expect(find.text('0'), findsOneWidget);
 	expect(find.text('Flutter Demo Home Page'), findsOneWidget);
+
+### Expects for widgets with keys of type `ValueKey(<enum type>)`
+
+The typical work flow is, if you have a class named `MyClass` with one or more keys in it, create
+an `enum` value for each key and then use that value when declaring your key. GenExpects looks for
+keys in enum format and exports them to expects. So,
+
+    enum MyClassKeys {
+        topContainer,
+    }
+
+    class MyClass extends StatelessWidget {
+        :
+        Container(key: const ValueKey(MyClassKeys.topContainer);
+        :
+    }
+
+will generate the expect statement
+
+	/// Replace your call to generateExpects with the code below.
+	expect(find.byKey(const ValueKey(MyClassKeys.topContainer)), findsOneWidget);
 
 ### Expects for widgets with keys
 
