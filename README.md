@@ -82,13 +82,12 @@ GenExpects generates an `expect` statement for every `widgetType` found:
 
 ### Expects for widgets with keys of type `ValueKey(<enum type>)`
 
-The typical work flow is, if you have a class named `MyClass` with one or more keys in it, create
-an `enum` value for each key and then use that value when declaring your key. GenExpects looks for
-keys in enum format and exports them to expects. So,
+GenExpects supports `ValueKey` for enum types. Typically, if you have a class named `MyClass`, 
+create an `enum` for storing keys. GenExpects looks for keys in enum format and exports them to 
+expects. (Note that GenExpects generates `expect` statements only for public keys . Private enums
+(e.g., `_MyClassKeys`) are not supported. 
 
-    enum MyClassKeys {
-        topContainer,
-    }
+To created enum keys:
 
     class MyClass extends StatelessWidget {
         :
@@ -96,7 +95,11 @@ keys in enum format and exports them to expects. So,
         :
     }
 
-will generate the expect statement
+    enum MyClassKeys {
+        topContainer,
+    }
+
+GenExpects will generate:
 
 	/// Replace your call to generateExpects with the code below.
 	expect(find.byKey(const ValueKey(MyClassKeys.topContainer)), findsOneWidget);
