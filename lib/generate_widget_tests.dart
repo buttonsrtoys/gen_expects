@@ -416,9 +416,7 @@ List<Widget> _getWidgetsForExpects(
     if (isEmptyTextWidget(widget)) {
       result = false;
     } else {
-      result = (widget.key != null &&
-              (widget.key.toString().contains('__') ||
-                  (!widget.key.toString().contains('_') && widget.key.toString().contains('.')))) ||
+      result = (widget.key != null && (widget.key.toString().isCustomString || widget.key.toString().isEnumString)) ||
           registeredTypes.contains(widget.runtimeType) ||
           WidgetMeta.isTextEnabled(widget);
     }
