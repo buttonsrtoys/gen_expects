@@ -1,6 +1,6 @@
 name: gen_expects
 description: Code generator that walks the widget tree of the test app and outputs expect statements for widget tests.
-version: 0.1.6
+version: 0.2.0
 repository: https://github.com/buttonsrtoys/gen_expects
 issue_tracker: https://github.com/buttonsrtoys/gen_expects/issues
 

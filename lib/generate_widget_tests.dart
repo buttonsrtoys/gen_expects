@@ -304,9 +304,9 @@ Future<List<String>> _outputWidgetTestsWithGestures(
 
   text.add('/// Copy the code below and paste it in your main()');
   for (final widgetMeta in widgetMetas) {
-    final gestureName = getGesture(widgetMeta.widgetKey);
+    final gestureName = getGesture(widgetMeta.keyString);
     if (gestureName == 'onTap') {
-      final testDescription = 'Tap ${widgetMeta.widgetKey}';
+      final testDescription = 'Tap ${widgetMeta.keyString}';
       text.add("testWidgets('$testDescription', (WidgetTester tester) async {");
       text.add('\tawait tester.pumpWidget(TestApp());');
       text.add('\tawait tester.pumpAndSettle();');
@@ -319,7 +319,7 @@ Future<List<String>> _outputWidgetTestsWithGestures(
       try {
         await tester.tap(find.byKey(widgetMeta.widget.key!));
         await tester.pumpAndSettle();
-        text.add('\tawait tester.tap(find.byKey(${widgetMeta.widgetKey}));');
+        text.add('\tawait tester.tap(find.byKey(${widgetMeta.keyString}));');
         text.add('\tawait tester.pumpAndSettle();');
         text.addAll(
           await genExpectsOutput(
@@ -329,7 +329,7 @@ Future<List<String>> _outputWidgetTestsWithGestures(
         );
       } catch (e) {
         text.add('\t// The following line threw an exception');
-        text.add('\t// await tester.tap(find.byKey(${widgetMeta.widgetKey}));');
+        text.add('\t// await tester.tap(find.byKey(${widgetMeta.keyString}));');
       }
       text.add('});');
     }
@@ -416,7 +416,7 @@ List<Widget> _getWidgetsForExpects(
     if (isEmptyTextWidget(widget)) {
       result = false;
     } else {
-      result = (widget.key != null && widget.key.toString().contains('__')) ||
+      result = (widget.key != null && (widget.key.toString().isCustomString || widget.key.toString().isEnumString)) ||
           registeredTypes.contains(widget.runtimeType) ||
           WidgetMeta.isTextEnabled(widget);
     }
@@ -440,7 +440,7 @@ List<String> _expectStringsFromExpectMeta(ExpectMeta expectMeta) {
   final expects = <String>[];
 
   // Number of attributes (e.g., Type, key, text) to match in expect
-  final int attributesToMatchCount = (expectMeta.widgetMeta.widgetKey.isNotEmpty ? 1 : 0) +
+  final int attributesToMatchCount = (expectMeta.widgetMeta.keyString.isNotEmpty ? 1 : 0) +
       (expectMeta.widgetMeta.widgetText.isNotEmpty ? 1 : 0) +
       (expectMeta.widgetMeta.isWidgetTypeRegistered ? 1 : 0);
 
@@ -458,8 +458,15 @@ List<String> _expectStringsFromExpectMeta(ExpectMeta expectMeta) {
 String _generateExpect(WidgetMeta widgetMeta) {
   late final String generatedExpect;
 
-  if (widgetMeta.widgetKey.isNotEmpty) {
-    generatedExpect = '\texpect(find.byKey(${widgetMeta.widgetKey}), ${widgetMeta.matcherType.matcherName});';
+  if (widgetMeta.keyString.isNotEmpty) {
+    if (widgetMeta.keyType == KeyType.enumValue) {
+      generatedExpect =
+          '\texpect(find.byKey(const ValueKey(${widgetMeta.keyString})), ${widgetMeta.matcherType.matcherName});';
+    } else if (widgetMeta.keyType == KeyType.stringValueKey) {
+      generatedExpect = '\texpect(find.byKey(${widgetMeta.keyString}), ${widgetMeta.matcherType.matcherName});';
+    } else {
+      throw Exception('Unexpected keyType');
+    }
   } else if (widgetMeta.widgetText.isNotEmpty) {
     generatedExpect = "\texpect(find.text('${widgetMeta.widgetText}'), ${widgetMeta.matcherType.matcherName});";
   } else if (widgetMeta.isWidgetTypeRegistered) {
@@ -505,7 +512,7 @@ List<String> _generateExpectWidgets(WidgetMeta widgetMeta, int attributesToMatch
   }
 
   void addKeyAttributeToBuffer() {
-    buffer.write("key: ${widgetMeta.widgetKey}");
+    buffer.write("key: ${widgetMeta.keyString}");
   }
 
   void addMatcherAttributeToBuffer() {
@@ -530,7 +537,7 @@ List<String> _generateExpectWidgets(WidgetMeta widgetMeta, int attributesToMatch
     }
   }
 
-  if (widgetMeta.widgetKey.isNotEmpty) {
+  if (widgetMeta.keyString.isNotEmpty) {
     addKeyAttributeToBuffer();
   }
 

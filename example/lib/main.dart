@@ -48,6 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
+        key: const ValueKey(MyClassKeys.center),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -82,4 +83,8 @@ class Fab extends StatelessWidget {
       child: const Icon(Icons.add),
     );
   }
+}
+
+enum MyClassKeys {
+  center;
 }

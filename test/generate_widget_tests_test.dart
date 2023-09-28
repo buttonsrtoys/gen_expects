@@ -26,6 +26,10 @@ class MyCustomClass extends StatelessWidget {
   }
 }
 
+enum MyEnumKeys {
+  myKeyName,
+}
+
 void main() {
   const textNotInLookup = 'I am text that is not in the lookup map';
   const text = 'Testing 1, 2, 3';
@@ -34,6 +38,7 @@ void main() {
   const anotherTextStringId = 'anotherTesting123';
   const valueKey = ValueKey('__MyKeyClassName__myKeyName');
   const keyName = 'MyKeyClassName.myKeyName';
+  const enumKeyName = 'MyEnumKeys.myKeyName';
   const textWidgetNoKey = Text(text);
   const textWidgetUpperCase = Text(textUpperCase);
   const textWidgetWithKeyAndNotInLookup = Text(
@@ -46,6 +51,11 @@ void main() {
   );
   final textButtonWithKey = TextButton(
     key: valueKey,
+    onPressed: () {},
+    child: textWidgetNoKey,
+  );
+  final textButtonWithEnumKey = TextButton(
+    key: const ValueKey(MyEnumKeys.myKeyName),
     onPressed: () {},
     child: textWidgetNoKey,
   );
@@ -97,6 +107,20 @@ void main() {
 
         expect(output.contains(instructions), true);
         expect(output.contains("\texpect(find.byKey($keyName), findsOneWidget);"), true);
+      },
+    );
+
+    testWidgets(
+      'Key (no text or type) passed to find.byKey',
+      (WidgetTester tester) async {
+        await tester.pumpWidget(_buildApp(textButtonWithEnumKey));
+        await tester.pumpAndSettle();
+
+        final output = await genExpectsOutput(tester, compareWithPrevious: false);
+
+        await genExpects(tester);
+        expect(output.contains(instructions), true);
+        expect(output.contains("\texpect(find.byKey(const ValueKey($enumKeyName)), findsOneWidget);"), true);
       },
     );
 
