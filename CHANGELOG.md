@@ -1,3 +1,6 @@
+## 0.2.1
+Fixed ReadMe images.
+
 ## 0.2.0
 Added support for enum keys.
 

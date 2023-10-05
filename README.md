@@ -1,6 +1,6 @@
 # gen_expects
 
-![gen_expects](https://github.com/buttonsrtoys/gen_expects/blob/main/assets/GenExpectsLogo.png)
+![gen_expects](https://raw.githubusercontent.com/buttonsrtoys/gen_expects/main/assets/GenExpectsLogo.png)
 
 Code generator that walks the widget tree of a test app and generates expect statements for Flutter widgets tests.
 
