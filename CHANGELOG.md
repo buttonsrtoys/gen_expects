@@ -1,3 +1,6 @@
+## 0.2.2
+Removed unnecessary analyzer version restriction.
+
 ## 0.2.1
 Fixed ReadMe images.
 
