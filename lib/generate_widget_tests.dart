@@ -89,8 +89,11 @@ Future<List<String>> genExpectsOutput(
   bool copyToClipboard = true,
   bool showTip = true,
   bool compareWithPrevious = true,
+  bool? outputExpects,
+  bool? outputMeta,
 }) async {
   assert(!shouldGesture || testAppBuilder != null);
+  assert(outputExpects == null || outputMeta == null);
 
   if (pathToStrings != null) {
     await _loadEnStringReverseLookupIfNecessary(pathToStrings);
@@ -138,6 +141,7 @@ Future<List<String>> genExpectsOutput(
         showTip: showTip,
         testAppBuilder: testAppBuilder,
         silent: silent,
+        outputType: outputMeta == true ? OutputType.widgetMeta : OutputType.expects,
       ),
     );
   }
@@ -154,6 +158,7 @@ Future<List<String>> _generateExpectsForWidgets(
   required bool showTip,
   required bool silent,
   Widget Function()? testAppBuilder,
+  required OutputType outputType,
 }) async {
   final text = <String>[];
 
@@ -166,7 +171,7 @@ Future<List<String>> _generateExpectsForWidgets(
   final currentWidgetMetas = widgetMetasFromWidgets(widgets);
   final deltaWidgetMetas = _getDeltaWidgetMetas(currentWidgetMetas, _previousWidgetMetas);
   currentWidgetMetas.addAll(deltaWidgetMetas);
-  final currentExpectStrings = _expectStringsFromWidgetMetas(currentWidgetMetas);
+  final currentExpectStrings = _outputStringsFromWidgetMetas(currentWidgetMetas, outputType);
   final deltaExpectStrings = _getDeltaExpectStrings(currentExpectStrings, _previousExpectStrings);
 
   if (!silent) {
@@ -177,7 +182,7 @@ Future<List<String>> _generateExpectsForWidgets(
         text.add("/// No changes to widget with keys or custom types since the prior call to 'generateExpects'");
       }
     } else {
-      if (showTip) {
+      if (showTip && outputType == OutputType.expects) {
         text.add(instructions);
       }
       text.addAll(deltaExpectStrings);
@@ -239,10 +244,18 @@ enum _ExpectTypeOrder {
   nonIntlText,
 }
 
+enum OutputType {
+  expects,
+  widgetMeta;
+}
+
 /// Generates expect() strings from [WidgetMeta]s. Sorts strings in order of [_ExpectTypeOrder]
-List<String> _expectStringsFromWidgetMetas(List<WidgetMeta> widgetMetas) {
+List<String> _outputStringsFromWidgetMetas(
+  List<WidgetMeta> widgetMetas,
+  OutputType outputType,
+) {
   final expectMetas = <ExpectMeta>[];
-  final expectStrings = <String>[];
+  final result = <String>[];
 
   for (final widgetMeta in widgetMetas) {
     final expectMetaFromWidgetMeta = _expectMetaFromWidgetMeta(widgetMeta);
@@ -267,14 +280,20 @@ List<String> _expectStringsFromWidgetMetas(List<WidgetMeta> widgetMetas) {
   for (final expectMeta in expectMetas) {
     if (!generatedNonIntlTextComment && sortOrder(expectMeta) == 2) {
       generatedNonIntlTextComment = true;
-      expectStrings.add('\t// No reverse lookup found for the text in the expect statements below');
+      result.add('\t// No reverse lookup found for the text in the expect statements below');
     }
 
-    final expectStringsFromWidgetMeta = _expectStringsFromExpectMeta(expectMeta);
-    expectStrings.addAll(expectStringsFromWidgetMeta);
+    late final List<String> expectStringsFromWidgetMeta;
+    if (outputType == OutputType.expects) {
+      expectStringsFromWidgetMeta = _expectStringsFromExpectMeta(expectMeta);
+    } else if (outputType == OutputType.widgetMeta) {
+      expectStringsFromWidgetMeta = _metaStringsFromExpectMeta(expectMeta);
+    }
+
+    result.addAll(expectStringsFromWidgetMeta);
   }
 
-  return expectStrings;
+  return result;
 }
 
 void _outputText(List<String> strings) {
@@ -455,6 +474,14 @@ List<String> _expectStringsFromExpectMeta(ExpectMeta expectMeta) {
   return expects;
 }
 
+List<String> _metaStringsFromExpectMeta(ExpectMeta expectMeta) {
+  final expects = <String>[];
+
+  expects.add(_generateWidgetMeta(expectMeta.widgetMeta));
+
+  return expects;
+}
+
 String _generateExpect(WidgetMeta widgetMeta) {
   late final String generatedExpect;
 
@@ -490,7 +517,10 @@ ExpectMeta _expectMetaFromWidgetMeta(WidgetMeta widgetMeta) {
   return expectMeta;
 }
 
-List<String> _generateExpectWidgets(WidgetMeta widgetMeta, int attributesToMatch) {
+List<String> _generateExpectWidgets(
+  WidgetMeta widgetMeta,
+  int attributesToMatch,
+) {
   final buffer = StringBuffer();
   const intlPlaceHolder = '__INTL_PLACE_HOLDER__';
   List<String>? intlKeys;
@@ -563,6 +593,61 @@ List<String> _generateExpectWidgets(WidgetMeta widgetMeta, int attributesToMatch
       result.add('\t// (End of matches)');
     }
   }
+
+  return result;
+}
+
+String _generateWidgetMeta(
+  WidgetMeta widgetMeta,
+) {
+  final buffer = StringBuffer();
+  bool isFirstAttribute = true;
+
+  void addCommaIfNecessary() {
+    if (isFirstAttribute) {
+      isFirstAttribute = false;
+    } else {
+      buffer.write(', ');
+    }
+  }
+
+  void addTextAttributeToBuffer() {
+    addCommaIfNecessary();
+    buffer.write("text: '${widgetMeta.widgetText}'");
+  }
+
+  void addKeyAttributeToBuffer() {
+    addCommaIfNecessary();
+    buffer.write("key: ${widgetMeta.keyString}");
+  }
+
+  void addMatcherAttributeToBuffer() {
+    addCommaIfNecessary();
+    buffer.write('count: ');
+    if (widgetMeta.matcherType == MatcherTypes.findsNothing) {
+      buffer.write('0');
+    } else if (widgetMeta.matcherType == MatcherTypes.findsOneWidget) {
+      buffer.write('1');
+    } else if (widgetMeta.matcherType == MatcherTypes.findsWidgets) {
+      buffer.write('many');
+    }
+  }
+
+  buffer.write('${widgetMeta.widgetType}: {');
+
+  if (widgetMeta.keyString.isNotEmpty) {
+    addKeyAttributeToBuffer();
+  }
+
+  if (widgetMeta.widgetText.isNotEmpty) {
+    addTextAttributeToBuffer();
+  }
+
+  addMatcherAttributeToBuffer();
+
+  buffer.write('}');
+
+  final result = buffer.toString();
 
   return result;
 }

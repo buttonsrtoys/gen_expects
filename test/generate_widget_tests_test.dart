@@ -202,5 +202,14 @@ void main() {
       }
       expect(expectCount, 1);
     });
+
+    testWidgets('generate widget meta', (WidgetTester tester) async {
+      await tester.pumpWidget(_buildApp(textWidgetWithKey));
+      await tester.pumpAndSettle();
+
+      final output = await genExpectsOutput(tester, outputMeta: true);
+
+      expect(output.contains("Text: {key: MyKeyClassName.myKeyName, text: 'Testing 1, 2, 3', count: 1}"), true);
+    });
   });
 }
