@@ -30,6 +30,30 @@ enum MyEnumKeys {
   myKeyName,
 }
 
+class CounterWidget extends StatefulWidget {
+  const CounterWidget({super.key});
+
+  @override
+  State<CounterWidget> createState() => _CounterWidgetState();
+}
+
+class _CounterWidgetState extends State<CounterWidget> {
+  int _count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text('Count: $_count'),
+        ElevatedButton(
+          onPressed: () => setState(() => _count++),
+          child: const Text('Press to Increment'),
+        ),
+      ],
+    );
+  }
+}
+
 void main() {
   const textNotInLookup = 'I am text that is not in the lookup map';
   const text = 'Testing 1, 2, 3';
@@ -229,5 +253,22 @@ void main() {
 
       expect(output.contains("Text: {key: MyEnumKeys.myKeyName, text: 'Hello', count: 1}"), true);
     });
+  });
+
+  testWidgets('confirm deleted widget reported', (WidgetTester tester) async {
+    await tester.pumpWidget(_buildApp(const CounterWidget()));
+    await tester.pumpAndSettle();
+
+    final output0 = await genExpectsOutput(tester, outputMeta: true);
+
+    expect(output0.contains("Text: {text: 'Count: 0', count: 1}"), true);
+
+    await tester.tap(find.byType(ElevatedButton));
+    await tester.pumpAndSettle();
+
+    final output1 = await genExpectsOutput(tester, outputMeta: true);
+
+    expect(output1.contains("Text: {text: 'Count: 1', count: 1}"), true);
+    expect(output1.contains("Text: {text: 'Count: 0', count: 0}"), true);
   });
 }
