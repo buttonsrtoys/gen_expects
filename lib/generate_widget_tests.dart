@@ -58,7 +58,6 @@ Future<void> _loadCommonTypesIfNecessary(Set<Type> commonTypes) async {
 
 /// Manually adds text to the reverse lookup map (instead of loading from file).
 /// [markEnStringFileAsLoaded] as true blocks loads from file. This is primarily for testing.
-@visibleForTesting
 Future<void> addTextToIntlReverseLookup({
   required String stringId,
   required String stringContent,
@@ -76,7 +75,6 @@ Future<void> addTextToIntlReverseLookup({
 }
 
 /// See [genExpects] for parameter docs
-@visibleForTesting
 Future<List<String>> genExpectsOutput(
   WidgetTester tester, {
   Set<Type>? widgetTypes,
@@ -171,7 +169,7 @@ Future<List<String>> _generateExpectsForWidgets(
   final currentWidgetMetas = widgetMetasFromWidgets(widgets);
   final deltaWidgetMetas = _getDeltaWidgetMetas(currentWidgetMetas, _previousWidgetMetas);
   currentWidgetMetas.addAll(deltaWidgetMetas);
-  final currentExpectStrings = _outputStringsFromWidgetMetas(currentWidgetMetas, outputType);
+  final currentExpectStrings = _outputStringsFromWidgetMetas(currentWidgetMetas, outputType, showTip);
   final deltaExpectStrings = _getDeltaExpectStrings(currentExpectStrings, _previousExpectStrings);
 
   if (!silent) {
@@ -253,6 +251,7 @@ enum OutputType {
 List<String> _outputStringsFromWidgetMetas(
   List<WidgetMeta> widgetMetas,
   OutputType outputType,
+  bool showTip,
 ) {
   final expectMetas = <ExpectMeta>[];
   final result = <String>[];
@@ -280,7 +279,9 @@ List<String> _outputStringsFromWidgetMetas(
   for (final expectMeta in expectMetas) {
     if (!generatedNonIntlTextComment && sortOrder(expectMeta) == 2) {
       generatedNonIntlTextComment = true;
-      result.add('\t// No reverse lookup found for the text in the expect statements below');
+      if (showTip) {
+        result.add('\t// No reverse lookup found for the text in the expect statements below');
+      }
     }
 
     late final List<String> expectStringsFromWidgetMeta;
