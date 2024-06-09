@@ -211,5 +211,23 @@ void main() {
 
       expect(output.contains("Text: {key: MyKeyClassName.myKeyName, text: 'Testing 1, 2, 3', count: 1}"), true);
     });
+
+    testWidgets('confirm ValueKey works', (WidgetTester tester) async {
+      await tester.pumpWidget(_buildApp(const Text('Hello', key: ValueKey('helloKey'))));
+      await tester.pumpAndSettle();
+
+      final output = await genExpectsOutput(tester, outputMeta: true);
+
+      expect(output.contains("Text: {key: 'helloKey', text: 'Hello', count: 1}"), true);
+    });
+
+    testWidgets('confirm enum key works', (WidgetTester tester) async {
+      await tester.pumpWidget(_buildApp(const Text('Hello', key: ValueKey(MyEnumKeys.myKeyName))));
+      await tester.pumpAndSettle();
+
+      final output = await genExpectsOutput(tester, outputMeta: true);
+
+      expect(output.contains("Text: {key: MyEnumKeys.myKeyName, text: 'Hello', count: 1}"), true);
+    });
   });
 }
