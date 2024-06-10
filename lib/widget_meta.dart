@@ -79,18 +79,6 @@ class WidgetMeta {
                 (widgetText.isEmpty || w is Text && w.data == widgetText) &&
                 (!isWidgetTypeRegistered || w.runtimeType == widgetType)),
             currentMatcherType.matcher);
-/*
-        if (keyString.isNotEmpty) {
-          // expect(find.byKey(widget.key!), currentMatcherType.matcher);
-          expect(find.byWidgetPredicate((w) => w.key == widget.key!), currentMatcherType.matcher);
-        } else if (widgetText.isNotEmpty) {
-          // expect(find.text(widgetText), currentMatcherType.matcher);
-          expect(find.byWidgetPredicate((w) => w is Text && w.data == widgetText), currentMatcherType.matcher);
-        } else if (isWidgetTypeRegistered) {
-          // expect(find.byType(widgetType), currentMatcherType.matcher);
-          expect(find.byWidgetPredicate((w) => w.runtimeType == widgetType), currentMatcherType.matcher);
-        }
- */
 
         // if here, expect didn't throw, so we have our matcher type
         matcherType = currentMatcherType;

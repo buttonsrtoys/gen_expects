@@ -291,6 +291,6 @@ void main() {
     final output1 = await genExpectsOutput(tester, outputMeta: true);
 
     expect(output1.contains("Text: {key: 'TextKey', text: 'Count: 1', count: 1}"), true);
-    // expect(output1.contains("Text: {key: 'TextKey', text: 'Count: 0', count: 0}"), true);
+    expect(output1.contains("Text: {key: 'TextKey', text: 'Count: 0', count: 0}"), true);
   });
 }
