@@ -73,13 +73,12 @@ class WidgetMeta {
 
     for (final currentMatcherType in MatcherTypes.values) {
       try {
-        if (keyString.isNotEmpty) {
-          expect(find.byKey(widget.key!), currentMatcherType.matcher);
-        } else if (widgetText.isNotEmpty) {
-          expect(find.text(widgetText), currentMatcherType.matcher);
-        } else if (isWidgetTypeRegistered) {
-          expect(find.byType(widgetType), currentMatcherType.matcher);
-        }
+        expect(
+            find.byWidgetPredicate((w) =>
+                (keyString.isEmpty || w.key == widget.key!) &&
+                (widgetText.isEmpty || w is Text && w.data == widgetText) &&
+                (!isWidgetTypeRegistered || w.runtimeType == widgetType)),
+            currentMatcherType.matcher);
 
         // if here, expect didn't throw, so we have our matcher type
         matcherType = currentMatcherType;
@@ -113,8 +112,14 @@ class WidgetMeta {
         words.removeWhere((word) => word == '');
 
         if (words.length == 1) {
-          keyType = KeyType.enumValue;
-          keyString = words[0];
+          final word = words[0];
+          if (word.contains('.')) {
+            keyType = KeyType.enumValue;
+            keyString = word;
+          } else {
+            keyType = KeyType.stringValueKey;
+            keyString = "'$word'";
+          }
         } else if (words.length == 2) {
           keyType = KeyType.stringValueKey;
           keyString = '${words[0]}.${words[1]}';
@@ -126,12 +131,14 @@ class WidgetMeta {
           keyType = KeyType.unknown;
           keyString = '';
         }
+      } else {
+        keyString = '<Unknown key type>';
       }
     }
   }
 
   bool _isWidgetKeyProperlyFormatted(String originalWidgetKey) =>
-      (originalWidgetKey.isCustomString || originalWidgetKey.isEnumString) &&
+      (originalWidgetKey.isCustomString || originalWidgetKey.isEnumString || originalWidgetKey.isValueKeyString) &&
       originalWidgetKey.contains('[<') &&
       originalWidgetKey.contains('>]');
 }
@@ -139,6 +146,7 @@ class WidgetMeta {
 extension KeyString on String {
   bool get isCustomString => this.contains('__');
   bool get isEnumString => this.contains('_') == false && this.contains('.') == true;
+  bool get isValueKeyString => this.startsWith('[<') && this.endsWith('>]');
 }
 
 enum KeyType {

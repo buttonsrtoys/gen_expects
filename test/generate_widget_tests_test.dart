@@ -30,6 +30,35 @@ enum MyEnumKeys {
   myKeyName,
 }
 
+class CounterWidget extends StatefulWidget {
+  final ValueKey<String>? textKey;
+
+  const CounterWidget({
+    super.key,
+    this.textKey,
+  });
+
+  @override
+  State<CounterWidget> createState() => _CounterWidgetState();
+}
+
+class _CounterWidgetState extends State<CounterWidget> {
+  int _count = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text('Count: $_count', key: widget.textKey),
+        ElevatedButton(
+          onPressed: () => setState(() => _count++),
+          child: const Text('Press to Increment'),
+        ),
+      ],
+    );
+  }
+}
+
 void main() {
   const textNotInLookup = 'I am text that is not in the lookup map';
   const text = 'Testing 1, 2, 3';
@@ -202,5 +231,66 @@ void main() {
       }
       expect(expectCount, 1);
     });
+
+    testWidgets('generate widget meta', (WidgetTester tester) async {
+      await tester.pumpWidget(_buildApp(textWidgetWithKey));
+      await tester.pumpAndSettle();
+
+      final output = await genExpectsOutput(tester, outputMeta: true);
+
+      expect(output.contains("Text: {key: MyKeyClassName.myKeyName, text: 'Testing 1, 2, 3', count: 1}"), true);
+    });
+
+    testWidgets('confirm ValueKey works', (WidgetTester tester) async {
+      await tester.pumpWidget(_buildApp(const Text('Hello', key: ValueKey('helloKey'))));
+      await tester.pumpAndSettle();
+
+      final output = await genExpectsOutput(tester, outputMeta: true);
+
+      expect(output.contains("Text: {key: 'helloKey', text: 'Hello', count: 1}"), true);
+    });
+
+    testWidgets('confirm enum key works', (WidgetTester tester) async {
+      await tester.pumpWidget(_buildApp(const Text('Hello', key: ValueKey(MyEnumKeys.myKeyName))));
+      await tester.pumpAndSettle();
+
+      final output = await genExpectsOutput(tester, outputMeta: true);
+
+      expect(output.contains("Text: {key: MyEnumKeys.myKeyName, text: 'Hello', count: 1}"), true);
+    });
+  });
+
+  testWidgets('confirm removed widget reported', (WidgetTester tester) async {
+    await tester.pumpWidget(_buildApp(const CounterWidget()));
+    await tester.pumpAndSettle();
+
+    final output0 = await genExpectsOutput(tester, outputMeta: true);
+
+    expect(output0.contains("Text: {text: 'Count: 0', count: 1}"), true);
+
+    await tester.tap(find.byType(ElevatedButton));
+    await tester.pumpAndSettle();
+
+    final output1 = await genExpectsOutput(tester, outputMeta: true);
+
+    expect(output1.contains("Text: {text: 'Count: 1', count: 1}"), true);
+    expect(output1.contains("Text: {text: 'Count: 0', count: 0}"), true);
+  });
+
+  testWidgets('confirm removed widget with key reported', (WidgetTester tester) async {
+    await tester.pumpWidget(_buildApp(const CounterWidget(textKey: ValueKey('TextKey'))));
+    await tester.pumpAndSettle();
+
+    final output0 = await genExpectsOutput(tester, outputMeta: true);
+
+    expect(output0.contains("Text: {key: 'TextKey', text: 'Count: 0', count: 1}"), true);
+
+    await tester.tap(find.byType(ElevatedButton));
+    await tester.pumpAndSettle();
+
+    final output1 = await genExpectsOutput(tester, outputMeta: true);
+
+    expect(output1.contains("Text: {key: 'TextKey', text: 'Count: 1', count: 1}"), true);
+    expect(output1.contains("Text: {key: 'TextKey', text: 'Count: 0', count: 0}"), true);
   });
 }
