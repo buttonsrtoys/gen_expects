@@ -75,6 +75,7 @@ Future<void> addTextToIntlReverseLookup({
 Future<List<String>> genExpectsOutput(
   WidgetTester tester, {
   Set<Type>? widgetTypes,
+  Set<String>? widgetNames,
   String? pathToStrings,
   Widget Function()? testAppBuilder,
   bool silent = false,
@@ -103,7 +104,7 @@ Future<List<String>> genExpectsOutput(
     _previousExpectStrings = [];
   }
 
-  final widgets = _getWidgetsForExpects(tester);
+  final widgets = _getWidgetsForExpects(tester, widgetNames ?? <String>{});
 
   if (widgets.isEmpty) {
     text.add(
@@ -342,6 +343,7 @@ Future<List<String>> _outputWidgetTestsWithGestures(
 /// The returned list is in no particular order.
 List<Widget> _getWidgetsForExpects(
   WidgetTester tester,
+  Set<String> widgetNames,
 ) {
   final widgets = <Widget>[];
 
@@ -362,6 +364,7 @@ List<Widget> _getWidgetsForExpects(
     } else {
       result = (widget.key != null && (widget.key.toString().isCustomString || widget.key.toString().isEnumString)) ||
           registeredTypes.contains(widget.runtimeType) ||
+          widgetNames.contains(widget.runtimeType.toString()) ||
           WidgetMeta.isTextEnabled(widget);
     }
     return result;

@@ -163,6 +163,7 @@ void main() {
 
         expect(output.contains(instructions), true);
         expect(output.contains("\ttester.expectWidget(intl: (s) => s.$textStringId);"), true);
+        expect(output.contains("\texpect(find.byType(MyCustomClass), findsOneWidget);"), true);
       },
     );
 
