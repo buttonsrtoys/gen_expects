@@ -7,7 +7,7 @@ class WidgetMeta {
   }) {
     _updateWidgetKey();
     widgetType = widget.runtimeType;
-    isWidgetTypeRegistered = registeredTypes.contains(widgetType);
+    isWidgetTypeRegistered = registeredTypes.contains(widgetType) || registeredNames.contains(widgetType.toString());
     _updateWidgetText();
     _updateMatcher();
 

@@ -1,5 +1,7 @@
 part of 'gen_expects.dart';
 
+Set<String> registeredNames = {};
+
 const String instructions = '/// Replace your call to generateExpects with the code below.';
 List<WidgetMeta> _previousWidgetMetas = [];
 List<String> _previousExpectStrings = [];
@@ -17,6 +19,7 @@ Map<String, List<String>> _enStringReverseLookup = <String, List<String>>{};
 Future<void> genExpects(
   WidgetTester tester, {
   Set<Type>? widgetTypes,
+  Set<String>? widgetNames,
   String? pathToStrings,
   bool silent = false,
   bool showTip = true,
@@ -25,6 +28,7 @@ Future<void> genExpects(
   final text = await genExpectsOutput(
     tester,
     widgetTypes: widgetTypes,
+    widgetNames: widgetNames,
     pathToStrings: pathToStrings,
     silent: silent,
     showTip: showTip,
@@ -75,6 +79,7 @@ Future<void> addTextToIntlReverseLookup({
 Future<List<String>> genExpectsOutput(
   WidgetTester tester, {
   Set<Type>? widgetTypes,
+  Set<String>? widgetNames,
   String? pathToStrings,
   Widget Function()? testAppBuilder,
   bool silent = false,
@@ -88,6 +93,8 @@ Future<List<String>> genExpectsOutput(
 }) async {
   assert(!shouldGesture || testAppBuilder != null);
   assert(outputExpects == null || outputMeta == null);
+
+  registeredNames = widgetNames ?? {};
 
   if (pathToStrings != null) {
     await _loadEnStringReverseLookupIfNecessary(pathToStrings);
@@ -103,12 +110,10 @@ Future<List<String>> genExpectsOutput(
     _previousExpectStrings = [];
   }
 
-  final widgets = _getWidgetsForExpects(tester);
+  final widgets = _getWidgetsForExpects(tester, widgetNames ?? <String>{});
 
   if (widgets.isEmpty) {
-    text.add(
-      'No widgets found with keys created by @GenKey. Did you add @GenKey above a class with keys?\n',
-    );
+    text.add('No widgets found for approval testing.');
   } else {
     text.addAll(
       await _generateExpectsForWidgets(
@@ -342,6 +347,7 @@ Future<List<String>> _outputWidgetTestsWithGestures(
 /// The returned list is in no particular order.
 List<Widget> _getWidgetsForExpects(
   WidgetTester tester,
+  Set<String> widgetNames,
 ) {
   final widgets = <Widget>[];
 
@@ -362,6 +368,7 @@ List<Widget> _getWidgetsForExpects(
     } else {
       result = (widget.key != null && (widget.key.toString().isCustomString || widget.key.toString().isEnumString)) ||
           registeredTypes.contains(widget.runtimeType) ||
+          widgetNames.contains(widget.runtimeType.toString()) ||
           WidgetMeta.isTextEnabled(widget);
     }
     return result;
